@@ -1,0 +1,50 @@
+services:
+  client:
+    image: phishing-simulation/client
+    container_name: ps-client
+    build:
+      context: ../
+      dockerfile: ./docker/frontend.Dockerfile
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_config:/config
+    networks:
+        - phishing-net
+  
+  api:
+    image: phishign-simulation/api
+    container_name: ps-server
+    ports:
+      - 3000:3000
+    env_file:
+      - ../backend/.env.prod
+    build:
+      context: ../
+      dockerfile: ./docker/api.Dockerfile
+    networks:
+      - phishing-net
+
+  mongo:
+    image: phishing-simulation/db
+    container_name: ps-mongo
+    env_file:
+      - ./mongo.env
+    build:
+      context: ./
+      dockerfile: ./mongo.Dockerfile
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - phishing-net
+
+networks:
+  phishing-net:
+    driver: bridge
+
+volumes:
+  caddy_config:

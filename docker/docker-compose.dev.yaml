@@ -1,0 +1,64 @@
+services:
+  # mongo:
+  #   image: mongo:6.0
+  #   restart: always
+  #   # build:
+  #   #   context: ./
+  #   #   dockerfile: ./mongodb.Dockerfile
+  #   ports:
+  #     - 27017:27017
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: example
+  #   # healthcheck:
+  #   #   test: "mongosh -u monitor -p monitor --eval \"try {
+  #   #       rs.status().ok
+  #   #     } catch (e) {
+  #   #       rs.initiate({ '_id': 'rs0', 'members': [{ '_id': 0, 'host': 'localhost:27017' }] }).ok
+  #   #     }\""
+  #   #   interval: 10s
+  #   #   timeout: 30s
+  #   #   start_period: 2s
+  #   #   retries: 10
+  #   command: mongod --replSet rs0 --bind_ip 0.0.0.0
+
+  mongo:
+    image: phishing-simulation/mongo112
+    container_name: phishing-mongo
+    # environment:
+      # MONGO_ADMIN_USERNAME: root
+      # MONGO_ADMIN_PASSWORD: root
+      # # MONGO_GUI_USERNAME: ${MONGO_GUI_USERNAME}
+      # # MONGO_GUI_PASSWORD: ${MONGO_GUI_PASSWORD}
+      # MONGO_INITDB_ROOT_USERNAME: root
+      # MONGO_INITDB_ROOT_PASSWORD: root
+      # MONGO_INITDB_DATABASE: phishing
+    env_file:
+      - ./mongo.env
+    build:
+      context: ./
+      dockerfile: ./mongo.Dockerfile
+    restart: always 
+    # healthcheck:
+    #   test: "mongosh -u monitor -p monitor --eval \"try {
+    #       rs.status().ok
+    #     } catch (e) {
+    #       rs.initiate().ok
+    #     }\""
+    #   interval: 10s
+    #   timeout: 30s
+    #   start_period: 2s
+    #   retries: 10
+    ports:
+      - 27017:27017
+
+  # mongo-express:
+  #   image: mongo-express
+  #   restart: always
+  #   ports:
+  #     - 7001:8081
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: root
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: example
+  #     ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+  #     # ME_CONFIG_BASICAUTH: false

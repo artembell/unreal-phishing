@@ -1,0 +1,19 @@
+localhost {
+	root * /code/static
+	file_server browse
+	# log stdout
+
+	route /api/* {
+		reverse_proxy * api:3000
+	}
+
+	# route /* {
+	# 	reverse_proxy * 127.0.0.1:4000
+	# }
+
+	log {
+		output file /code/logs/access.json
+		format json
+		level debug
+	}
+}
