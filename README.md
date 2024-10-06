@@ -45,3 +45,24 @@ make client
 cd ./docker
 make stop
 ```
+
+
+## Details of implementation
+### Frontend
+- ReactJS (only CSR).
+- Redux + RTK Query. Used for automatic polling and caching of phishing attempts, user info.
+- React Router DOM. Used for client side routing and allows to implement authentication guards logic on the client.
+- shadcn/ui + Tailwind. Used for basic styling.
+- caddy. Used for serving static frontend build and proxying requests to the backend api. Uses HTTPS out of the box.
+
+### Backend
+- NestJS. Powerful backend framework. Used for handling HTTP requests, cookie parsing and organizing code into low coupled entities.
+- PrismaORM. By default it prevents SQL injections by escaping all query parameters and using parametrized quieries.
+- nodemailer. Used for sending emails.
+
+### Build
+- Docker + Docker Compose.
+
+### Security
+- HTTP only access token. Client has no access to it and therefore no script can steal user authentication cookies.
+- HTTPS (further seting up needed, e.g. setting up caddy and deploying certificates)
